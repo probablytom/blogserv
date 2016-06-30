@@ -1,3 +1,4 @@
 tornado
 pyyaml
 CommonMark
+simplenote

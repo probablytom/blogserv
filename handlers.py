@@ -68,6 +68,7 @@ def extract_metadata(path):
                     break
                 else:
                     metadata += line
+    if metadata == []: return None
     metadata = ''.join(metadata)
     return yaml.load(metadata)
 
@@ -106,13 +107,16 @@ class ArchiveHandler(web.RequestHandler):
                 metadata[post] = extract_metadata(post)
             for post in posts:
                 print(metadata[post])
-                if 'post_number' in metadata[post].keys():
-                    ordered_posts[metadata[post]['post_number']] = post[6:-3]
+                if metadata[post] is not None:
+                    if 'post_number' in metadata[post].keys():
+                        ordered_posts[metadata[post]['post_number']] = post[6:-3]
             for i in range(1,len(ordered_posts.keys())+1):
                 post = ordered_posts[i]
                 archive_content += "1. [" + post + "](" + post + ")\n"
 
         archive_content += "\n\n"
+
+        print(ordered_posts)
 
         output += cm.commonmark(archive_content)
 

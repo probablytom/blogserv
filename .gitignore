@@ -90,3 +90,9 @@ ENV/
 
 # Ignore the virtualenv
 genv/
+
+# Login details
+simplenote_credentials.txt
+
+# Posts
+posts/
