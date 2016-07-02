@@ -84,15 +84,27 @@ class MarkdownRenderingHandler(web.RequestHandler):
         parser = PageCreator(postname)
         self.write(parser.generate_html())
 
-class TufteDeliverer(web.RequestHandler):
-    def get(self):
-        with open('tufte.css') as tufte:
-            self.write(tufte.read())
 
-class FontDeliverer(web.RequestHandler):
+class AbstractFileDeliverer(web.RequestHandler):
+    def deliver(self, file_to_deliver):
+        with open(file_to_deliver, 'r') as deliverable:
+            self.write(deliverable.read())
+
+
+class TufteDeliverer(AbstractFileDeliverer):
+    def get(self):
+        self.deliver('tufte.css')
+
+
+class FontDeliverer(AbstractFileDeliverer):
     def get(self, path):
-        with open('et-book/'+path) as font_file:
-            self.write(font_file.read())
+        self.deliver('et-book/'+path)
+
+
+class ImageDeliverer(AbstractFileDeliverer):
+    def get(self, path):
+        self.deliver('images/'+path)
+
 
 class ArchiveHandler(web.RequestHandler):
     def get(self):

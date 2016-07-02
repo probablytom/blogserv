@@ -1,6 +1,6 @@
 from tornado import ioloop, web
 from handlers import MainHandler, TufteDeliverer, ArchiveHandler
-from handlers import FontDeliverer, MarkdownRenderingHandler
+from handlers import FontDeliverer, ImageDeliverer, MarkdownRenderingHandler
 from sn_driver import simplenote_update
 
 username, password = '',''
@@ -15,6 +15,7 @@ def make_app():
         (r'/tufte.css', TufteDeliverer),
         (r'/archive', ArchiveHandler),
         (r'/et-book/([a-zA-Z/.-]*)', FontDeliverer),
+        (r'/images/([a-zA-Z/.-]*)', ImageDeliverer),
         (r'/([a-zA-Z\-\_]+\.md)', MarkdownRenderingHandler), 
         (r'/([a-zA-Z\-\_]+)', MarkdownRenderingHandler), 
         ])
