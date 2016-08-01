@@ -1,11 +1,12 @@
 from tornado import web
+import s2t
 import yaml
 import CommonMark as cm
 from glob import glob
 
 
 class PageCreator(object):
-    def __init__(self, mdfile):
+    def __init__(self, mdfile=None):
         self.mdfile = mdfile
         self.preamble = '<html><head><link rel="stylesheet" href="tufte.css"/></head><body>'
         self.closing = '</body></html>'
@@ -36,6 +37,9 @@ class PageCreator(object):
             markdown = self.__parse_yaml_frontmatter(content)
             markdown = ''.join(markdown)
 
+        return self.preamble + cm.commonmark(markdown) + self.closing
+
+    def convert_markdown(self, markdown):
         return self.preamble + cm.commonmark(markdown) + self.closing
 
 
@@ -134,3 +138,12 @@ class ArchiveHandler(web.RequestHandler):
 
         output += '</body></html>'
         self.write(output)
+
+
+class MusicHandler(web.RequestHandler):
+    def get(self, artist):
+        print(artist)
+        s2t.play(artist)
+        creator = PageCreator()
+        markdown = "#" + artist + "\n\n*Trying to play " + artist + "...*"
+        self.write(creator.convert_markdown(markdown))

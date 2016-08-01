@@ -96,3 +96,6 @@ simplenote_credentials.txt
 
 # Posts
 posts/
+
+# Password information etc
+config.py
